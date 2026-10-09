@@ -1023,11 +1023,14 @@ h2 em {
 
 .factory {
   position: relative;
-  height: 330px;
   overflow: hidden;
-  background: #40544e;
 }
-
+.factory-image {
+  object-fit: cover;
+}
+.factory-image {
+  object-fit: cover;
+}
 .factory-caption {
   position: absolute;
   z-index: 2;
