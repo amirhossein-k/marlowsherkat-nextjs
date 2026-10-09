@@ -1,46 +1,11 @@
-# Marlow Corporate Website
+# Marlow final clean build
 
-Persian RTL corporate website for Marlow, an office and gaming chair manufacturer in Tehran.
+این بسته نسخه تمیز و هماهنگ کل بخش‌های اصلی پروژه است:
+- صفحه اصلی با جزئیات محصولات
+- صفحه درباره و تماس در صفحه اصلی با لینک‌های درست
+- صفحه `/agency` با فرم کامل و استایل هماهنگ
+- داشبورد ریسپانسیو با استایل مستقل
+- صفحه پروژه‌ها
+- API فرم همکاری، اتصال MongoDB و alias TypeScript
 
-## Included
-
-- Responsive Next.js App Router website
-- Persian RTL layout and content
-- Corporate hero, company profile, product families, quality principles, portfolio, and contact sections
-- Local optimized product visuals in `public/products`
-- Product gallery and zoom
-- Agency and partnership request form at `/agency`
-- MongoDB persistence through Next.js Route Handlers
-- Custom management dashboard at `/dashboard`
-- Portfolio page at `/projects`
-- Vercel configuration and deployment guide
-
-## Local setup
-
-```bash
-cp .env.example .env.local
-# edit .env.local with MongoDB Atlas values
-npm install
-npm run dev
-```
-
-Open `http://localhost:3000`.
-
-## Production build
-
-```bash
-npm run build
-npm start
-```
-
-## MongoDB
-
-The agency form posts to `/api/agency` and stores records in the `agency_requests` collection. See `MONGODB-NEXTJS.md`.
-
-## Vercel
-
-See `VERCEL-DEPLOY.md`. Set `MONGODB_URI` and `MONGODB_DB` in Vercel Project Settings before production use.
-
-## Demo content
-
-Tehran addresses and product visuals are sample content for this prototype. Replace them with official Marlow data and photography before public launch.
+فایل‌های این بسته را جایگزین مسیرهای هم‌نام در پروژه کن. سپس `npm install` و `npm run build` را اجرا کن و بعد commit/push بزن. در Vercel متغیرهای `MONGODB_URI` و `MONGODB_DB` را تنظیم کن.
