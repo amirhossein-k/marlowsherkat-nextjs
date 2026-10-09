@@ -217,7 +217,7 @@ export default function Home() {
               <div className={`product-image ${p.tone}`}>
                 <span>{p.model}</span>
                 <img src={p.image} alt={p.name} />
-                <b>
+                <b className="text-black">
                   مشاهده جزئیات <ArrowLeft size={15} />
                 </b>
               </div>
