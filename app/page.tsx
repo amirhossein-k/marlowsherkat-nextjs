@@ -1,45 +1,55 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowLeft, Menu } from 'lucide-react';
-import { useState } from 'react';
+import { ArrowLeft, Check, ChevronLeft, ChevronRight, X } from 'lucide-react';
+import React, { useState } from 'react';
 
-type Product = { name: string; model: string; tone: string; image: string };
+type Product = { name: string; model: string; tone: string; image: string; description: string; features: string[] };
 const products: Product[] = [
-  { name: 'صندلی مدیریتی', model: 'مدل M-01', tone: 'مدیریتی', image: '/products/executive-chair.svg' },
-  { name: 'صندلی گیمینگ', model: 'مدل G-02', tone: 'گیمینگ', image: '/products/gaming-chair.svg' },
-  { name: 'صندلی کارشناسی', model: 'مدل O-03', tone: 'کارشناسی', image: '/products/ergonomic-chair.svg' },
+  { name: 'صندلی مدیریتی', model: 'مدل M-01', tone: 'مدیریتی', image: '/products/executive-chair.svg', description: 'صندلی مدیریتی با طراحی رسمی، پشتی بلند و نشیمن راحت برای ساعت‌های طولانی کار.', features: ['پشتی بلند با طراحی ارگونومیک', 'روکش مقاوم و قابل شست‌وشو', 'مناسب اتاق مدیریت و جلسات'] },
+  { name: 'صندلی گیمینگ', model: 'مدل G-02', tone: 'گیمینگ', image: '/products/gaming-chair.svg', description: 'صندلی گیمینگ با پشتی حمایتی و فرم اسپرت برای تمرکز و استفاده طولانی‌مدت.', features: ['پشتیبان کامل کمر و گردن', 'دسته‌های قابل تنظیم', 'مناسب کار، بازی و تولید محتوا'] },
+  { name: 'صندلی کارشناسی', model: 'مدل O-03', tone: 'کارشناسی', image: '/products/ergonomic-chair.svg', description: 'انتخابی سبک و کاربردی برای میزهای کارشناسی، تیم‌های اداری و استفاده روزمره.', features: ['فرم جمع‌وجور و کاربردی', 'تهویه مناسب در پشتی', 'مناسب استفاده اداری روزانه'] },
 ];
 
-function Chair({ image, tone }: { image: string; tone: string }) {
-  return <img className={`chair-image ${tone}`} src={image} alt={tone} />;
+const e = React.createElement;
+function Chair({ product, className = '' }: { product: Product; className?: string }) {
+  return e('img', { className: `chair-image ${product.tone} ${className}`, src: product.image, alt: product.name });
+}
+function ProductModal({ product, close }: { product: Product; close: () => void }) {
+  return e('div', { className: 'product-modal', role: 'dialog', 'aria-modal': 'true' },
+    e('div', { className: 'product-dialog' },
+      e('button', { className: 'product-close', onClick: close, 'aria-label': 'بستن' }, e(X, { size: 20 })),
+      e('div', { className: `detail-visual ${product.tone}` }, e(Chair, { product })),
+      e('div', { className: 'detail-copy' },
+        e('span', { className: 'detail-model' }, product.model),
+        e('h2', null, product.name),
+        e('p', null, product.description),
+        e('h3', null, 'ویژگی‌های محصول'),
+        e('ul', null, product.features.map((feature) => e('li', { key: feature }, e(Check, { size: 16 }), feature))),
+        e(Link, { href: '/agency', className: 'btn red', onClick: close }, 'درخواست مشاوره ', e(ArrowLeft, { size: 16 }))
+      )
+    )
+  );
 }
 
 export default function Home() {
-  const [active, setActive] = useState(0);
-  return (
-    <main dir="rtl">
-      <header className="site-header"><div className="container header-inner">
-        <Link href="/" className="brand"><b>م</b><span>مارلو<small>تولیدکننده مبلمان اداری</small></span></Link>
-        <nav>{['خانه', 'محصولات', 'درباره ما', 'نمونه‌کارها', 'تماس با ما'].map((item, i) => <a key={item} className={i === 0 ? 'active' : ''} href={i === 1 ? '#products' : i === 3 ? '#projects' : i === 4 ? '#contact' : '#'}>{item}</a>)}</nav>
-        <Link href="/agency" className="dashboard-link">درخواست نمایندگی <ArrowLeft size={15} /></Link>
-        <Link href="/dashboard" className="dashboard-link">داشبورد اختصاصی <ArrowLeft size={15} /></Link>
-        <button className="mobile-menu" aria-label="منو"><Menu /></button>
-      </div></header>
-
-      <section className="hero"><div className="container hero-inner"><div className="hero-copy">
-        <span className="eyebrow">مارلو / طراحی و تولید در تهران</span><h1>فضای کار شما<br /><em>امضای شماست.</em></h1>
-        <p>تولید تخصصی صندلی‌های اداری، مدیریتی و گیمینگ با تمرکز بر طراحی، دوام و آسایش.</p>
-        <div className="hero-actions"><a className="btn red" href="#products">مشاهده محصولات <ArrowLeft size={17} /></a><a className="btn outline" href="#about">آشنایی با مارلو</a></div>
-      </div><div className="hero-art"><span>COLLECTION / ۱۴۰۵</span><Chair image={products[0].image} tone={products[0].tone} /><div className="art-badge">ساخته‌شده<br />برای تمرکز</div></div></div></section>
-
-      <section className="stats"><div><b>+۱۲</b><span>سال تجربه</span></div><div><b>+۲۴۰</b><span>پروژه تجهیزشده</span></div><div><b>۳</b><span>گروه محصول</span></div><div><b>تهران</b><span>یافت‌آباد، مرکز تولید</span></div></section>
-      <section id="about" className="container about section"><div className="section-label">۰۱ / درباره مارلو</div><div><h2>تولید ایرانی،<br /><em>استاندارد حرفه‌ای.</em></h2><p>مارلو یک مجموعه تولیدی و طراحی مبلمان اداری است که محصولات خود را برای فضاهای کاری امروز توسعه می‌دهد.</p><p>هر محصول با هدف ساختن نشیمنی راحت، بادوام و شایسته فضای شما طراحی می‌شود.</p></div><div className="factory">MARLOW<br />WORKS</div></section>
-      <section id="products" className="container section"><div className="section-head"><div><div className="section-label">۰۲ / محصولات</div><h2>برای هر فضای کار،<br /><em>یک انتخاب مطمئن.</em></h2></div><Link className="text-link" href="/dashboard">کاتالوگ محصولات <ArrowLeft size={15} /></Link></div>
-        <div className="product-grid">{products.map((product, i) => <article onClick={() => setActive(i)} className={`product-card ${active === i ? 'chosen' : ''}`} key={product.model}><div className={`product-image ${product.tone}`}><span>{product.model}</span><Chair image={product.image} tone={product.tone} /><b>مشاهده <ArrowLeft size={15} /></b></div><div className="product-copy"><h3>{product.name}</h3><p>طراحی شده برای استفاده حرفه‌ای و طولانی</p></div></article>)}</div>
-      </section>
-      <section id="projects" className="quality"><div className="container quality-inner"><div><div className="section-label light">۰۳ / چرا مارلو</div><h2>جزئیات،<br /><em>تفاوت را می‌سازد.</em></h2></div><div className="quality-grid"><div><b>۰۱</b><h3>طراحی کاربردی</h3><p>فرم‌هایی برای نشستن واقعی و استفاده روزانه.</p></div><div><b>۰۲</b><h3>متریال ماندگار</h3><p>انتخاب متریال با تمرکز بر دوام و ظاهر حرفه‌ای.</p></div><div><b>۰۳</b><h3>پشتیبانی پروژه</h3><p>از انتخاب محصول تا تجهیز کامل، همراه تیم شما هستیم.</p></div></div></div></section>
-      <section id="contact" className="container section contact"><div className="section-label">۰۴ / تماس با ما</div><h2>برای پروژه بعدی<br /><em>با ما صحبت کنید.</em></h2><Link className="btn red" href="/agency">درخواست مشاوره <ArrowLeft size={17} /></Link></section>
-    </main>
+  const [selected, setSelected] = useState<Product | null>(null);
+  return e('main', { dir: 'rtl' },
+    e('header', { className: 'site-header' }, e('div', { className: 'container header-inner' },
+      e(Link, { href: '/', className: 'brand' }, e('b', null, 'م'), e('span', null, 'مارلو', e('small', null, 'تولیدکننده مبلمان اداری'))),
+      e('nav', null, ['خانه', 'محصولات', 'درباره ما', 'نمونه‌کارها', 'تماس با ما'].map((item, i) => e('a', { key: item, className: i === 0 ? 'active' : '', href: i === 1 ? '#products' : i === 3 ? '/projects' : i === 4 ? '#contact' : '#' }, item))),
+      e(Link, { href: '/agency', className: 'dashboard-link' }, 'درخواست نمایندگی ', e(ArrowLeft, { size: 15 })),
+      e(Link, { href: '/dashboard', className: 'dashboard-link' }, 'داشبورد اختصاصی ', e(ArrowLeft, { size: 15 }))
+    )),
+    e('section', { className: 'hero' }, e('div', { className: 'container hero-inner' }, e('div', { className: 'hero-copy' },
+      e('span', { className: 'eyebrow' }, 'مارلو / طراحی و تولید در تهران'), e('h1', null, 'فضای کار شما', e('br'), e('em', null, 'امضای شماست.')), e('p', null, 'تولید تخصصی صندلی‌های اداری، مدیریتی و گیمینگ با تمرکز بر طراحی، دوام و آسایش.'), e('div', { className: 'hero-actions' }, e('a', { className: 'btn red', href: '#products' }, 'مشاهده محصولات ', e(ArrowLeft, { size: 17 })), e('a', { className: 'btn outline', href: '#about' }, 'آشنایی با مارلو'))
+    ), e('div', { className: 'hero-art' }, e('span', null, 'COLLECTION / ۱۴۰۵'), e(Chair, { product: products[0] }), e('div', { className: 'art-badge' }, 'ساخته‌شده', e('br'), 'برای تمرکز')))),
+    e('section', { className: 'stats' }, ['+۱۲|سال تجربه', '+۲۴۰|پروژه تجهیزشده', '۳|گروه محصول', 'تهران|یافت‌آباد، مرکز تولید'].map((x) => { const [a, b] = x.split('|'); return e('div', { key: a }, e('b', null, a), e('span', null, b)); })),
+    e('section', { id: 'about', className: 'container about section' }, e('div', { className: 'section-label' }, '۰۱ / درباره مارلو'), e('div', null, e('h2', null, 'تولید ایرانی،', e('br'), e('em', null, 'استاندارد حرفه‌ای.')), e('p', null, 'مارلو یک مجموعه تولیدی و طراحی مبلمان اداری است که محصولات خود را برای فضاهای کاری امروز توسعه می‌دهد.'), e('p', null, 'هر محصول با هدف ساختن نشیمنی راحت، بادوام و شایسته فضای شما طراحی می‌شود.')), e('div', { className: 'factory' }, 'MARLOW', e('br'), 'WORKS')),
+    e('section', { id: 'products', className: 'container section' }, e('div', { className: 'section-head' }, e('div', null, e('div', { className: 'section-label' }, '۰۲ / محصولات'), e('h2', null, 'برای هر فضای کار،', e('br'), e('em', null, 'یک انتخاب مطمئن.'))), e('span', { className: 'catalog-note' }, 'برای دیدن جزئیات، روی هر محصول بزنید')),
+      e('div', { className: 'product-grid' }, products.map((product) => e('article', { onClick: () => setSelected(product), className: 'product-card', key: product.model, role: 'button', tabIndex: 0, onKeyDown: (event: React.KeyboardEvent) => { if (event.key === 'Enter') setSelected(product); } }, e('div', { className: `product-image ${product.tone}` }, e('span', null, product.model), e(Chair, { product }), e('b', null, 'مشاهده جزئیات ', e(ArrowLeft, { size: 15 }))), e('div', { className: 'product-copy' }, e('h3', null, product.name), e('p', null, 'برای مشاهده مشخصات و ویژگی‌ها کلیک کنید'))))),
+    e('section', { className: 'quality' }, e('div', { className: 'container quality-inner' }, e('div', null, e('div', { className: 'section-label light' }, '۰۳ / چرا مارلو'), e('h2', null, 'جزئیات،', e('br'), e('em', null, 'تفاوت را می‌سازد.'))), e('div', { className: 'quality-grid' }, ['طراحی کاربردی', 'متریال ماندگار', 'پشتیبانی پروژه'].map((x, i) => e('div', { key: x }, e('b', null, `۰${i + 1}`), e('h3', null, x), e('p', null, 'فرم‌هایی برای نشستن واقعی و استفاده روزانه.'))))),
+    e('section', { id: 'contact', className: 'container section contact' }, e('div', { className: 'section-label' }, '۰۴ / تماس با ما'), e('h2', null, 'برای پروژه بعدی', e('br'), e('em', null, 'با ما صحبت کنید.')), e(Link, { className: 'btn red', href: '/agency' }, 'درخواست مشاوره ', e(ArrowLeft, { size: 17 }))),
+    selected ? e(ProductModal, { product: selected, close: () => setSelected(null) }) : null
   );
 }
