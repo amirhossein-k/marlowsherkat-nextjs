@@ -187,9 +187,12 @@ export default function Home() {
           </p>
         </div>
         <div className="factory">
-          MARLOW
-          <br />
-          WORKS
+          [/er.png](/er.png)
+          <div className="factory-caption">
+            MARLOW
+            <br />
+            WORKS
+          </div>
         </div>
       </section>
       <section id="products" className="container section">

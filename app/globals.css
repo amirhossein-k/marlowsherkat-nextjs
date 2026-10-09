@@ -1020,3 +1020,25 @@ h2 em {
     margin-bottom: 25px;
   }
 }
+
+.factory {
+  position: relative;
+  height: 330px;
+  overflow: hidden;
+  background: #40544e;
+  color: #fff;
+}
+
+.factory > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.factory::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #18231d99, transparent);
+}
