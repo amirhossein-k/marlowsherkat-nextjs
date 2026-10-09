@@ -187,7 +187,6 @@ export default function Home() {
           </p>
         </div>
         <div className="factory">
-          [/factory.png](/factory.png)
           <div className="factory-caption">
             MARLOW
             <br />
